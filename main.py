@@ -1,4 +1,5 @@
 import cv2
+from tiles import get_tile
 
 image = cv2.imread("input/ImageToBeCoded.png")
 
