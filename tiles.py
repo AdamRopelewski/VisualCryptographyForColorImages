@@ -5,6 +5,11 @@ def get_tile(tile_id):
     return tiles[tile_id - 1]
 
 
+def get_random_tile():
+    return tiles[np.random.randint(0, 16)]
+
+
+# Define the tiles
 tiles = [
     np.array([[1, 1], [1, 1]]),  # Tile 1
     np.array([[1, 1], [1, 0]]),  # Tile 2
