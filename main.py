@@ -2,14 +2,63 @@ import cv2
 from tiles import get_tile, get_random_tile
 
 
-def modify_pixels_brightness(image_hsv, row, col, new_brightness):
+def modify_pixels_brightness(image, row, col, new_brightness):
     """
     Modifies the pixels saturation value at the specified row and column in the given HSV image.
     """
-    pixel = image_hsv[row, col]
+    pixel = image[row, col]
     pixel[2] = new_brightness
-    image_hsv[row, col] = pixel
-    return image_hsv
+    image[row, col] = pixel
+    return image
+
+
+def check_if_bright_pixel(image_hsv, row, col):
+    """
+    Checks if the pixel at the specified row and column in the given HSV image has a brightness value greater than 0.5.
+    """
+    pixel = image_hsv[row, col]
+    if pixel[2] > 50:
+        return True
+    return False
+
+
+def resize_image(image, x):
+    """
+    Resizes the given image to x times the resolution.
+    """
+    one_dim_size = x // 2
+    new_image = cv2.resize(
+        image, (image.shape[1] * one_dim_size, image.shape[0] * one_dim_size)
+    )
+    return new_image
+
+
+def encode_images(image_hsv):
+    # Create a new HSV image with 4x resolution
+    encoded_hsv_image_1 = resize_image(image_hsv, 4)
+    encoded_hsv_image_2 = resize_image(image_hsv, 4)
+    print(image_hsv.shape[1])
+    for row in range(image_hsv.shape[0]):
+        for col in range(image_hsv.shape[1]):
+            tile = get_random_tile()
+            for i in range(2):
+                for j in range(2):
+                    # Check if the pixel is bright
+                    if tile[i][j] == 1:
+                        brightness = 100
+                    else:
+                        brightness = 0
+                    # Update the pixel's brightness value
+                    encoded_hsv_image_1 = modify_pixels_brightness(
+                        encoded_hsv_image_1, row * 2 + i, col * 2 + j, brightness
+                    )
+                    if not check_if_bright_pixel(image_hsv, row, col):
+                        brightness = 100 - brightness
+                    encoded_hsv_image_2 = modify_pixels_brightness(
+                        encoded_hsv_image_2, row * 2 + i, col * 2 + j, brightness
+                    )
+
+    return encoded_hsv_image_1, encoded_hsv_image_2
 
 
 image = cv2.imread("input/ImageToBeCoded.png")
@@ -18,55 +67,15 @@ image = cv2.imread("input/ImageToBeCoded.png")
 image_hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
 
-def check_if_bright_pixel(image_hsv, row, col):
-    """
-    Checks if the pixel at the specified row and column in the given HSV image has a brightness value greater than 0.5.
-    """
-    pixel = image_hsv[row, col]
-    if pixel[2] > 0.5:
-        return True
-
-
-def encode_images(image_hsv):
-    # Create a new HSV image with 4x resolution
-    encoded_hsv_image_1 = cv2.resize(
-        image_hsv, (image_hsv.shape[1] * 2, image_hsv.shape[0] * 2)
-    )
-    encoded_hsv_image_2 = cv2.resize(
-        image_hsv, (image_hsv.shape[1] * 2, image_hsv.shape[0] * 2)
-    )
-
-    for row in range(image_hsv.shape[0]):
-        for col in range(image_hsv.shape[1]):
-            tile = get_random_tile()
-            for i in range(2):
-                for j in range(2):
-                    # Check if the pixel is bright
-                    if tile[i, j] == 1:
-                        saturation = 1
-                    else:
-                        saturation = 0
-                    # Update the pixel's saturation value
-                    encoded_hsv_image_1 = modify_pixels_brightness(
-                        encoded_hsv_image_1, row * 2 + i, col * 2 + j, saturation
-                    )
-                    if not check_if_bright_pixel(image_hsv, row, col):
-                        saturation *= -1
-                    encoded_hsv_image_2 = modify_pixels_brightness(
-                        encoded_hsv_image_2, row * 2 + i, col * 2 + j, saturation
-                    )
-
-    return encoded_hsv_image_1, encoded_hsv_image_2
-
-
 encoded_hsv_image_1, encoded_hsv_image_2 = encode_images(image_hsv)
+encoded_rgb_image_1 = cv2.cvtColor(encoded_hsv_image_1, cv2.COLOR_HSV2RGB)
+encoded_rgb_image_2 = cv2.cvtColor(encoded_hsv_image_2, cv2.COLOR_HSV2RGB)
 # Display the image
 cv2.imshow("Image", image)
-cv2.imshow("Encoded1", encoded_hsv_image_1)
-cv2.imshow("Encoded2", encoded_hsv_image_2)
+cv2.imshow("Encoded1", encoded_rgb_image_1)
+cv2.imshow("Encoded2", encoded_rgb_image_2)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
-# # Convert the image back to RGB
-# image_modified = cv2.cvtColor(image_hsv, cv2.COLOR_HSV2RGB)
+cv2.imwrite("output/EncodedImage1.png", encoded_rgb_image_1)
+cv2.imwrite("output/EncodedImage2.png", encoded_rgb_image_2)
