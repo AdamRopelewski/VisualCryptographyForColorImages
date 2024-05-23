@@ -1,6 +1,5 @@
 from PIL import Image
 
-# Definicje kolorów
 colors = {
     'dark gray': (64, 64, 64),
     'black': (0, 0, 0),
@@ -67,15 +66,35 @@ colors_translated = {
     ]
 }
 
-n1 = 5
-n2 = 2
+n1 = 512
+n2 = 332
 
-# Tworzenie obrazu o wymiarach 5x2
-img = Image.new('RGB', (n1, n2))
+# img = Image.new('RGB', (n1, n2))
 
-# Wypełnianie obrazu kolorami
-for x, color in enumerate(colors.values()):
-    img.putpixel((x%n1, x//n1), color)
+# for x, color in enumerate(colors.values()):
+#     img.putpixel((x%n1, x//n1), color)
+
+def dither_image(image_path):
+    palette = []
+    for color in colors.values():
+        palette.extend(color)
+
+    image = Image.open(image_path)
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+
+    palette_image = Image.new("P", (1, 1))
+    palette_image.putpalette(palette)
+
+    dithered_image = image.quantize(palette=palette_image, dither=Image.FLOYDSTEINBERG)
+
+    safe_image = dithered_image.convert('RGB')
+
+    return safe_image
+
+image_path = 'input/ImageToBeCoded5.png'
+img = dither_image(image_path)
+img.show()
 
 img2 = Image.new('RGB', (n1*3, n2*3))
 
@@ -90,9 +109,6 @@ for x in range(n1):
                         img2.putpixel((x*3 + i, y*3 + j), replacement_color[j][i])
                 break
 
-
-# Wyświetlanie obrazu
-img.show()
 img2.show()
 
 import numpy as np
