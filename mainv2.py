@@ -115,3 +115,30 @@ for x in range(n1):
         for i in range(3):
             for j in range(3):
                 img3.paste(random_tile((255 if i==0 else 0, 255 if i==1 else 0, 255 if i==2 else 0)), (x*6 + i*2, y*6 + j*2))
+
+img3.show()
+
+img4 = Image.new('RGB', (n1*6, n2*6))
+
+for x in range(n1*3):
+    for y in range(n2*3):
+        pixel_color = img2.getpixel((x, y))
+        if pixel_color == (0, 0, 0):
+            tile = Image.new('RGB', (2, 2))
+            for i in range(2):
+                for j in range(2):
+                    tile.putpixel((i, j), tuple(np.array(img3.getpixel((x*2 + i, y*2 + j))) ^ np.array((255 if x%3==0 else 0, 255 if x%3==1 else 0, 255 if x%3==2 else 0))))
+            img4.paste(tile, (x*2, y*2))
+        else:
+            img4.paste(random_tile((255 if x%3==0 else 0, 255 if x%3==1 else 0, 255 if x%3==2 else 0)), (x*2, y*2))
+
+img4.show()
+
+img5 = Image.new('RGB', (n1*6, n2*6))
+for x in range(n1*6):
+    for y in range(n2*6):
+        pixel_color1 = img3.getpixel((x, y))
+        pixel_color2 = img4.getpixel((x, y))
+        and_color = tuple(np.array(pixel_color1) & np.array(pixel_color2))
+        img5.putpixel((x, y), and_color)
+img5.show()
