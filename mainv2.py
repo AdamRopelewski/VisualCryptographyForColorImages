@@ -94,3 +94,24 @@ for x in range(n1):
 # Wyświetlanie obrazu
 img.show()
 img2.show()
+
+import numpy as np
+
+def random_tile(color=(255, 255, 255)):
+    tile = Image.new('RGB', (2, 2))
+    for i in range(2):
+        for j in range(2):
+            new_color = color
+            if np.random.randint(0, 2) == 0:
+                new_color = (0, 0, 0)
+
+            tile.putpixel((i, j), new_color)
+    return tile
+
+img3 = Image.new('RGB', (n1*6, n2*6))
+
+for x in range(n1):
+    for y in range(n2):
+        for i in range(3):
+            for j in range(3):
+                img3.paste(random_tile((255 if i==0 else 0, 255 if i==1 else 0, 255 if i==2 else 0)), (x*6 + i*2, y*6 + j*2))
