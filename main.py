@@ -36,7 +36,7 @@ def dither_image(image_path):
     return safe_image
 
 
-def create_x3_res_dithered_made_of_tiles_image(
+def create_x9_res_dithered_made_of_tiles_image(
     dithered_image, colors, colors_translated, max_threads=4
 ):
     """
@@ -48,7 +48,7 @@ def create_x3_res_dithered_made_of_tiles_image(
     width = dithered_image.width
     height = dithered_image.height
 
-    x3_res_dithered_made_of_tiles_image = Image.new("RGB", (width * 3, height * 3))
+    x9_res_dithered_made_of_tiles_image = Image.new("RGB", (width * 3, height * 3))
 
     def process_pixel(x):
         for y in range(height):
@@ -58,7 +58,7 @@ def create_x3_res_dithered_made_of_tiles_image(
                     replacement_color = colors_translated[color_name]
                     for i in range(3):
                         for j in range(3):
-                            x3_res_dithered_made_of_tiles_image.putpixel(
+                            x9_res_dithered_made_of_tiles_image.putpixel(
                                 (x * 3 + i, y * 3 + j), replacement_color[j][i]
                             )
                     break
@@ -67,7 +67,7 @@ def create_x3_res_dithered_made_of_tiles_image(
         for x in range(width):
             executor.submit(process_pixel, x)
 
-    return x3_res_dithered_made_of_tiles_image
+    return x9_res_dithered_made_of_tiles_image
 
 
 def encode_image(original_width, original_height, max_threads=4):
@@ -218,7 +218,7 @@ original_width = dithered_image.width
 original_height = dithered_image.height
 
 
-x3_res_dithered_made_of_tiles_image = create_x3_res_dithered_made_of_tiles_image(
+x3_res_dithered_made_of_tiles_image = create_x9_res_dithered_made_of_tiles_image(
     dithered_image, colors, colors_translated, max_threads=max_threads
 )
 x3_res_dithered_made_of_tiles_image.save(
