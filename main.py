@@ -203,52 +203,62 @@ def restore_colors_and_res(decoded_image):
     return decoded_image_restored_colors
 
 
-max_threads = 8
+def encode(image_path, max_threads=4):
+    dithered_image = dither_image(image_path)
 
-time_start = time.time()
-image_path = "input/ImageToBeCoded0.png"
+    dithered_image.save("output/1_dithered_image.png")
+    print("1/6: dithered_image")
 
-dithered_image = dither_image(image_path)
+    original_width = dithered_image.width
+    original_height = dithered_image.height
 
-dithered_image.save("output/1_dithered_image.png")
-print("1/6: dithered_image")
+    x3_res_dithered_made_of_tiles_image = create_x9_res_dithered_made_of_tiles_image(
+        dithered_image, colors, colors_translated, max_threads=max_threads
+    )
+    x3_res_dithered_made_of_tiles_image.save(
+        "output/2_x3_res_dithered_made_of_tiles_image.png"
+    )
+    print("2/6: x9_res_dithered_image")
 
-original_width = dithered_image.width
-original_height = dithered_image.height
+    encoded_image_1 = encode_image(
+        original_width, original_height, max_threads=max_threads
+    )
+    encoded_image_1.save("output/3_encoded_image_1.png")
+    print("3/6: encoded_image_1")
 
-
-x3_res_dithered_made_of_tiles_image = create_x9_res_dithered_made_of_tiles_image(
-    dithered_image, colors, colors_translated, max_threads=max_threads
-)
-x3_res_dithered_made_of_tiles_image.save(
-    "output/2_x3_res_dithered_made_of_tiles_image.png"
-)
-print("2/6: x9_res_dithered_image")
-
-
-encoded_image_1 = encode_image(original_width, original_height, max_threads=max_threads)
-encoded_image_1.save("output/3_encoded_image_1.png")
-print("3/6: encoded_image_1")
-
-
-encoded_image_2 = encode_image_2(
-    original_width,
-    original_height,
-    x3_res_dithered_made_of_tiles_image,
-    encoded_image_1,
-    max_threads=max_threads,
-)
-encoded_image_2.save("output/4_encoded_image_2.png")
-print("4/6: encoded_image_2 ~ 60%")
+    encoded_image_2 = encode_image_2(
+        original_width,
+        original_height,
+        x3_res_dithered_made_of_tiles_image,
+        encoded_image_1,
+        max_threads=max_threads,
+    )
+    encoded_image_2.save("output/4_encoded_image_2.png")
+    print("4/6: encoded_image_2 ~ 60%")
 
 
-decoded_image = decode_images(encoded_image_1, encoded_image_2)
-decoded_image.save("output/5_decoded_image_xor_and.png")
-print("5/6: decoded_image")
+def decode(file_path_1, file_path_2, max_threads=4):
+    encoded_image_1 = Image.open(file_path_1)
+    encoded_image_2 = Image.open(file_path_2)
 
-decoded_image_restored_colors = restore_colors_and_res(decoded_image)
-decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
+    decoded_image = decode_images(encoded_image_1, encoded_image_2)
+    decoded_image.save("output/5_decoded_image_xor_and.png")
+    print("5/6: decoded_image")
 
-print("5/6: decoded_image_restored_colors")
+    decoded_image_restored_colors = restore_colors_and_res(decoded_image)
+    decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
 
-print("Time taken: ", time.time() - time_start)
+    print("6/6: decoded_image_restored_colors")
+
+
+if __name__ == "__main__":
+    max_threads = 8
+    time_start = time.time()
+    image_path = "input/ImageToBeCoded0.png"
+    encode(image_path, max_threads=max_threads)
+    decode(
+        "output/3_encoded_image_1.png",
+        "output/4_encoded_image_2.png",
+        max_threads=max_threads,
+    )
+    print("Time taken: ", time.time() - time_start)
