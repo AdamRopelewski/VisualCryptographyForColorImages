@@ -37,6 +37,12 @@ def dither_image(image_path):
 def create_x3_res_dithered_made_of_tiles_image(
     dithered_image, colors, colors_translated
 ):
+    """
+    Creates an image thats made of RGB (255) and Black.
+    Those mix into the original colors.
+    Each pixel now is represented by a 3.
+
+    """
     width = dithered_image.width
     height = dithered_image.height
 
@@ -58,13 +64,19 @@ def create_x3_res_dithered_made_of_tiles_image(
     return x3_res_dithered_made_of_tiles_image
 
 
-def encode_image(width, height):
-    encoded_image_1 = Image.new("RGB", (width * 6, height * 6))
+def encode_image(original_width, original_height):
+    """
+    Creates an image encrypted that is made of 2x2 random tiles.
+    Those are made of R or G or B (255) and Black.
+    """
 
-    for x in range(width):
-        for y in range(height):
+    encoded_image_1 = Image.new("RGB", (original_width * 6, original_height * 6))
+
+    for x in range(original_width):
+        for y in range(original_height):
             for i in range(3):
                 for j in range(3):
+                    # Generate a random tile with the corresponding color (R or G or B)
                     encoded_image_1.paste(
                         random_tile(
                             (
@@ -73,10 +85,59 @@ def encode_image(width, height):
                                 255 if i == 2 else 0,
                             )
                         ),
+                        # Paste the tile in the corresponding position
                         (x * 6 + i * 2, y * 6 + j * 2),
                     )
 
     return encoded_image_1
+
+
+def encode_image_2(
+    original_width,
+    original_height,
+    x3_res_dithered_made_of_tiles_image,
+    encoded_image_1,
+):
+    """
+    Encodes the second image.
+    """
+    encoded_image_2 = Image.new("RGB", (original_width * 6, original_height * 6))
+
+    for x in range(original_width * 3):
+        for y in range(original_height * 3):
+            pixel_color = x3_res_dithered_made_of_tiles_image.getpixel((x, y))
+            # If the pixel is black, we paste the corresponding tile based on the first image
+            if pixel_color == (0, 0, 0):
+                tile = Image.new("RGB", (2, 2))
+                for i in range(2):
+                    for j in range(2):
+                        encoded_pixel_from_im_1 = encoded_image_1.getpixel(
+                            (x * 2 + i, y * 2 + j)
+                        )
+                        tile_pixel = (
+                            255 if x % 3 == 0 else 0,
+                            255 if x % 3 == 1 else 0,
+                            255 if x % 3 == 2 else 0,
+                        )
+                        # XOR the encoded pixel from first encode image with the tile pixel
+                        new_pixel = tuple(
+                            np.array(encoded_pixel_from_im_1) ^ np.array(tile_pixel)
+                        )
+                        tile.putpixel((i, j), new_pixel)
+                encoded_image_2.paste(tile, (x * 2, y * 2))
+            else:
+                encoded_image_2.paste(
+                    random_tile(
+                        (
+                            255 if x % 3 == 0 else 0,
+                            255 if x % 3 == 1 else 0,
+                            255 if x % 3 == 2 else 0,
+                        )
+                    ),
+                    (x * 2, y * 2),
+                )
+
+    return encoded_image_2
 
 
 def decode_images(encoded_image_1, encoded_image_2):
@@ -100,67 +161,41 @@ image_path = "input/ImageToBeCoded5.png"
 dithered_image = dither_image(image_path)
 
 dithered_image.save("output/1_dithered_image.png")
-dithered_image.show("dithered_image")
+# dithered_image.show("dithered_image")
 print("1/5: dithered_image")
 
-width = dithered_image.width
-height = dithered_image.height
+original_width = dithered_image.width
+original_height = dithered_image.height
 
 
-x3_res_dithered_image = create_x3_res_dithered_made_of_tiles_image(
+x3_res_dithered_made_of_tiles_image = create_x3_res_dithered_made_of_tiles_image(
     dithered_image, colors, colors_translated
 )
-x3_res_dithered_image.save("output/2_x3_res_dithered_image.png")
-x3_res_dithered_image.show()
+x3_res_dithered_made_of_tiles_image.save(
+    "output/2_x3_res_dithered_made_of_tiles_image.png"
+)
+# x3_res_dithered_image.show()
 print("2/5: x3_res_dithered_image")
 
 
-encoded_image_1 = encode_image(width, height)
+encoded_image_1 = encode_image(original_width, original_height)
 encoded_image_1.save("output/3_encoded_image_1.png")
-encoded_image_1.show()
+# encoded_image_1.show()
 print("3/5: encoded_image_1")
 
 
-encoded_image_2 = Image.new("RGB", (width * 6, height * 6))
-
-for x in range(width * 3):
-    for y in range(height * 3):
-        pixel_color = x3_res_dithered_image.getpixel((x, y))
-        if pixel_color == (0, 0, 0):
-            tile = Image.new("RGB", (2, 2))
-            for i in range(2):
-                for j in range(2):
-                    tile.putpixel(
-                        (i, j),
-                        tuple(
-                            np.array(encoded_image_1.getpixel((x * 2 + i, y * 2 + j)))
-                            ^ np.array(
-                                (
-                                    255 if x % 3 == 0 else 0,
-                                    255 if x % 3 == 1 else 0,
-                                    255 if x % 3 == 2 else 0,
-                                )
-                            )
-                        ),
-                    )
-            encoded_image_2.paste(tile, (x * 2, y * 2))
-        else:
-            encoded_image_2.paste(
-                random_tile(
-                    (
-                        255 if x % 3 == 0 else 0,
-                        255 if x % 3 == 1 else 0,
-                        255 if x % 3 == 2 else 0,
-                    )
-                ),
-                (x * 2, y * 2),
-            )
+encoded_image_2 = encode_image_2(
+    original_width,
+    original_height,
+    x3_res_dithered_made_of_tiles_image,
+    encoded_image_1,
+)
 encoded_image_2.save("output/4_encoded_image_2.png")
-encoded_image_2.show()
+# encoded_image_2.show()
 print("4/5: encoded_image_2")
 
 
 decoded_image = decode_images(encoded_image_1, encoded_image_2)
 decoded_image.save("output/5_decoded_image.png")
-decoded_image.show()
+# decoded_image.show()
 print("5/5: decoded_image")
