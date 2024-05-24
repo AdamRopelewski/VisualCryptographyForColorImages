@@ -206,7 +206,7 @@ def restore_colors_and_res(decoded_image):
 max_threads = 8
 
 time_start = time.time()
-image_path = "input/test2.png"
+image_path = "input/ImageToBeCoded0.png"
 
 dithered_image = dither_image(image_path)
 
