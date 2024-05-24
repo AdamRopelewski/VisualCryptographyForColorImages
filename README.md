@@ -6,7 +6,7 @@
 
 ## Opis Projektu
 
-Wykorzystana przez nas metoda kryptografii wizualnej polega na podziale obrazka na dwa częściowo losowe, nieczytelne obrazy, które po złożeniu na siebie, odsłaniają oryginalny obraz. Ta technika, zwykle stosowana do obrazów binarnych (czerń i biel), została tutaj rozszerzona na kolorowe zdjęcia, zwiększając tym samym pulę zdjęć możliwą do przesłania. Nasz projekt wykorzystuje model kolorów RGB oraz schemat kryptograficzny (2, 2), który wymaga obu części do odszyfrowania obrazu.
+Wykorzystana przez nas metoda kryptografii wizualnej polega na podziale obrazka na dwa częściowo losowe, nieczytelne obrazy, które po nałożeniu odpowiednim na siebie, odsłaniają oryginalny obraz. Ta technika, zwykle stosowana do obrazów binarnych (czerń i biel), została tutaj rozszerzona na kolorowe zdjęcia, zwiększając tym samym pulę zdjęć możliwą do przesłania. Nasz projekt wykorzystuje model kolorów RGB oraz schemat kryptograficzny (2, 2), który wymaga obu części do odszyfrowania obrazu.
 
 
 ## Instalacja
@@ -37,7 +37,7 @@ Masz dwie części i chcesz odsłonić prawdę? Oto jak to zrobić.
 
 Spójrz na te przykłady. Każdy z nich opowiada historię, ukrywa tajemnicę.
 <p align="center">
-  <img src="./input/frompdfbiggerres.png" alt="Plik wejściowu" width="650">
+  <img src="./input/ImageToBeCoded0.png" alt="Plik wejściowu" width="650">
 </p>
 
 <p align="center">
