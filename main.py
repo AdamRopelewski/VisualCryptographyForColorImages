@@ -206,12 +206,11 @@ def restore_colors_and_res(decoded_image):
 max_threads = 8
 
 time_start = time.time()
-image_path = "input/frompdfbiggerres.png"
+image_path = "input/ImageToBeCoded0.png"
 
-dithered_image = dither_image(image_path, max_threads=max_threads)
+dithered_image = dither_image(image_path)
 
 dithered_image.save("output/1_dithered_image.png")
-# dithered_image.show("dithered_image")
 print("1/6: dithered_image")
 
 original_width = dithered_image.width
@@ -224,13 +223,11 @@ x3_res_dithered_made_of_tiles_image = create_x9_res_dithered_made_of_tiles_image
 x3_res_dithered_made_of_tiles_image.save(
     "output/2_x3_res_dithered_made_of_tiles_image.png"
 )
-# x3_res_dithered_image.show()
-print("2/6: x3_res_dithered_image")
+print("2/6: x9_res_dithered_image")
 
 
 encoded_image_1 = encode_image(original_width, original_height, max_threads=max_threads)
 encoded_image_1.save("output/3_encoded_image_1.png")
-# encoded_image_1.show()
 print("3/6: encoded_image_1")
 
 
@@ -242,16 +239,12 @@ encoded_image_2 = encode_image_2(
     max_threads=max_threads,
 )
 encoded_image_2.save("output/4_encoded_image_2.png")
-# encoded_image_2.show()
-print("4/6: encoded_image_2")
+print("4/6: encoded_image_2 ~ 60%")
 
 
 decoded_image = decode_images(encoded_image_1, encoded_image_2)
 decoded_image.save("output/5_decoded_image_xor_and.png")
-# decoded_image.show()
 print("5/6: decoded_image")
-
-# decoded_image = Image.open("output/5_decoded_image_xor_and.png")
 
 decoded_image_restored_colors = restore_colors_and_res(decoded_image)
 decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
