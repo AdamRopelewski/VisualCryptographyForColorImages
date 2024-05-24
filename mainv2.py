@@ -1,6 +1,8 @@
 from PIL import Image
-from tilesv2 import colors, colors_translated
+from colors import colors, colors_translated
 import numpy as np
+import concurrent.futures
+import time
 
 
 def random_tile(color=(255, 255, 255)):
@@ -35,7 +37,7 @@ def dither_image(image_path):
 
 
 def create_x3_res_dithered_made_of_tiles_image(
-    dithered_image, colors, colors_translated
+    dithered_image, colors, colors_translated, max_threads=4
 ):
     """
     Creates an image thats made of RGB (255) and Black.
@@ -48,7 +50,7 @@ def create_x3_res_dithered_made_of_tiles_image(
 
     x3_res_dithered_made_of_tiles_image = Image.new("RGB", (width * 3, height * 3))
 
-    for x in range(width):
+    def process_pixel(x):
         for y in range(height):
             pixel_color = dithered_image.getpixel((x, y))
             for color_name, color_values in colors.items():
@@ -61,10 +63,14 @@ def create_x3_res_dithered_made_of_tiles_image(
                             )
                     break
 
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
+        for x in range(width):
+            executor.submit(process_pixel, x)
+
     return x3_res_dithered_made_of_tiles_image
 
 
-def encode_image(original_width, original_height):
+def encode_image(original_width, original_height, max_threads=4):
     """
     Creates an image encrypted that is made of 2x2 random tiles.
     Those are made of R or G or B (255) and Black.
@@ -72,11 +78,11 @@ def encode_image(original_width, original_height):
 
     encoded_image_1 = Image.new("RGB", (original_width * 6, original_height * 6))
 
-    for x in range(original_width):
+    def generate_tile(x):
+        # Generate a random tile with the corresponding color (R or G or B)
         for y in range(original_height):
             for i in range(3):
                 for j in range(3):
-                    # Generate a random tile with the corresponding color (R or G or B)
                     encoded_image_1.paste(
                         random_tile(
                             (
@@ -89,6 +95,10 @@ def encode_image(original_width, original_height):
                         (x * 6 + i * 2, y * 6 + j * 2),
                     )
 
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
+        for x in range(original_width):
+            executor.submit(generate_tile, x)
+
     return encoded_image_1
 
 
@@ -97,13 +107,14 @@ def encode_image_2(
     original_height,
     x3_res_dithered_made_of_tiles_image,
     encoded_image_1,
+    max_threads=4,
 ):
     """
     Encodes the second image.
     """
     encoded_image_2 = Image.new("RGB", (original_width * 6, original_height * 6))
 
-    for x in range(original_width * 3):
+    def generate_tile(x):
         for y in range(original_height * 3):
             pixel_color = x3_res_dithered_made_of_tiles_image.getpixel((x, y))
             # If the pixel is black, we paste the corresponding tile based on the first image
@@ -137,6 +148,10 @@ def encode_image_2(
                     (x * 2, y * 2),
                 )
 
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
+        for x in range(original_width * 3):
+            executor.submit(generate_tile, x)
+
     return encoded_image_2
 
 
@@ -156,32 +171,67 @@ def decode_images(encoded_image_1, encoded_image_2):
     return decoded_image
 
 
-image_path = "input/ImageToBeCoded5.png"
+def restore_colors_and_res(decoded_image):
+    decoded_width = decoded_image.width
+    decoded_height = decoded_image.height
+    original_height = decoded_height // 6
+    original_width = decoded_width // 6
+    decoded_image_restored_colors = Image.new("RGB", (original_width, original_height))
+    for x in range(original_width):
+        for y in range(original_height):
+            sum_r = 0
+            sum_g = 0
+            sum_b = 0
+            sum_black = 0
+            for i in range(6):
+                for j in range(6):
+                    decoded_pixel_from_im_1 = decoded_image.getpixel(
+                        (x * 6 + i, y * 6 + j)
+                    )
+                    if decoded_pixel_from_im_1 == (255, 0, 0):
+                        sum_r += 1
+                    elif decoded_pixel_from_im_1 == (0, 255, 0):
+                        sum_g += 1
+                    elif decoded_pixel_from_im_1 == (0, 0, 255):
+                        sum_b += 1
+                    else:
+                        sum_black += 1
+            restored_color = (255 * sum_r // 9, 255 * sum_g // 9, 255 * sum_b // 9)
+            if sum_r == 0 and sum_g == 0 and sum_b == 0:
+                restored_color = (0, 0, 0)
+            decoded_image_restored_colors.putpixel((x, y), restored_color)
+    return decoded_image_restored_colors
 
-dithered_image = dither_image(image_path)
+
+max_threads = 8
+
+time_start = time.time()
+image_path = "input/frompdfbiggerres.png"
+
+dithered_image = dither_image(image_path, max_threads=max_threads)
 
 dithered_image.save("output/1_dithered_image.png")
 # dithered_image.show("dithered_image")
-print("1/5: dithered_image")
+print("1/6: dithered_image")
 
 original_width = dithered_image.width
 original_height = dithered_image.height
 
 
 x3_res_dithered_made_of_tiles_image = create_x3_res_dithered_made_of_tiles_image(
-    dithered_image, colors, colors_translated
+    dithered_image, colors, colors_translated, max_threads=max_threads
 )
 x3_res_dithered_made_of_tiles_image.save(
     "output/2_x3_res_dithered_made_of_tiles_image.png"
 )
 # x3_res_dithered_image.show()
-print("2/5: x3_res_dithered_image")
+print("2/6: x3_res_dithered_image")
 
 
-encoded_image_1 = encode_image(original_width, original_height)
+encoded_image_1 = encode_image(original_width, original_height, max_threads=max_threads)
 encoded_image_1.save("output/3_encoded_image_1.png")
 # encoded_image_1.show()
-print("3/5: encoded_image_1")
+print("3/6: encoded_image_1")
 
 
 encoded_image_2 = encode_image_2(
@@ -189,13 +239,23 @@ encoded_image_2 = encode_image_2(
     original_height,
     x3_res_dithered_made_of_tiles_image,
     encoded_image_1,
+    max_threads=max_threads,
 )
 encoded_image_2.save("output/4_encoded_image_2.png")
 # encoded_image_2.show()
-print("4/5: encoded_image_2")
+print("4/6: encoded_image_2")
 
 
 decoded_image = decode_images(encoded_image_1, encoded_image_2)
-decoded_image.save("output/5_decoded_image.png")
+decoded_image.save("output/5_decoded_image_xor_and.png")
 # decoded_image.show()
-print("5/5: decoded_image")
+print("5/6: decoded_image")
+
+# decoded_image = Image.open("output/5_decoded_image_xor_and.png")
+
+decoded_image_restored_colors = restore_colors_and_res(decoded_image)
+decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
+
+print("5/6: decoded_image_restored_colors")
+
+print("Time taken: ", time.time() - time_start)
