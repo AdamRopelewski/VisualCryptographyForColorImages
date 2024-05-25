@@ -75,7 +75,7 @@ def encode_image(original_width, original_height, max_threads=4):
     Creates an image encrypted that is made of 2x2 random tiles.
     Those are made of R or G or B (255) and Black.
     """
-
+    total_pixels = original_width * 6, original_height * 6
     encoded_image_1 = Image.new("RGB", (original_width * 6, original_height * 6))
 
     def generate_tile(x):
@@ -158,7 +158,6 @@ def encode_image_2(
 def decode_images(encoded_image_1, encoded_image_2):
     width = encoded_image_1.width
     height = encoded_image_1.height
-
     decoded_image = Image.new("RGB", (width, height))
 
     for x in range(width):
@@ -176,6 +175,7 @@ def restore_colors_and_res(decoded_image):
     decoded_height = decoded_image.height
     original_height = decoded_height // 6
     original_width = decoded_width // 6
+
     decoded_image_restored_colors = Image.new("RGB", (original_width, original_height))
     for x in range(original_width):
         for y in range(original_height):
@@ -203,12 +203,14 @@ def restore_colors_and_res(decoded_image):
     return decoded_image_restored_colors
 
 
-def encode(image_path, max_threads=4):
+def encode(image_path, max_threads=4, progress_var=None):
     dithered_image = dither_image(image_path)
-
+    if progress_var:
+        progress_var.set(0)
     dithered_image.save("output/1_dithered_image.png")
+    if progress_var:
+        progress_var.set(5.0)  # 1/4 stages completed
     print("1/6: dithered_image")
-
     original_width = dithered_image.width
     original_height = dithered_image.height
 
@@ -216,16 +218,18 @@ def encode(image_path, max_threads=4):
         dithered_image, colors, colors_translated, max_threads=max_threads
     )
     x3_res_dithered_made_of_tiles_image.save(
-        "output/2_x3_res_dithered_made_of_tiles_image.png"
+        "output/2_x9_res_dithered_made_of_tiles_image.png"
     )
+    if progress_var:
+        progress_var.set(20.0)  # 2/4 stages completed
     print("2/6: x9_res_dithered_image")
-
     encoded_image_1 = encode_image(
         original_width, original_height, max_threads=max_threads
     )
     encoded_image_1.save("output/3_encoded_image_1.png")
+    if progress_var:
+        progress_var.set(60.0)  # 3/4 stages completed
     print("3/6: encoded_image_1")
-
     encoded_image_2 = encode_image_2(
         original_width,
         original_height,
@@ -234,20 +238,25 @@ def encode(image_path, max_threads=4):
         max_threads=max_threads,
     )
     encoded_image_2.save("output/4_encoded_image_2.png")
-    print("4/6: encoded_image_2 ~ 60%")
+    if progress_var:
+        progress_var.set(100.0)  # 4/4 stages completed
+    print("4/6: encoded_image_2 ~ 80%")
 
 
-def decode(file_path_1, file_path_2, max_threads=4):
+def decode(file_path_1, file_path_2, max_threads=4, progress_var=None):
     encoded_image_1 = Image.open(file_path_1)
     encoded_image_2 = Image.open(file_path_2)
 
     decoded_image = decode_images(encoded_image_1, encoded_image_2)
     decoded_image.save("output/5_decoded_image_xor_and.png")
+    if progress_var:
+        progress_var.set(80.0)  # 1/2 stages completed
     print("5/6: decoded_image")
-
     decoded_image_restored_colors = restore_colors_and_res(decoded_image)
     decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
 
+    if progress_var:
+        progress_var.set(100.0)  # 2/2 stages completed
     print("6/6: decoded_image_restored_colors")
 
 
