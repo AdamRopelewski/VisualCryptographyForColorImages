@@ -19,12 +19,6 @@ cwd += "/"  # Add a trailing slash
 def encode(max_threads, progress_var, cwd):
     global start_time
     start_time = time.time()
-    try:
-        max_threads = int(max_threads)
-    except ValueError:
-        max_threads = 4
-    if not (max_threads > 0 and max_threads < 16):
-        max_threads = 4
     file_path = filedialog.askopenfilename(
         filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.bmp;*.gif")]
     )
@@ -39,12 +33,7 @@ def decode(max_threads, progress_var, cwd):
     global start_time
     start_time = time.time()
     thread = None
-    try:
-        max_threads = int(max_threads)
-    except ValueError:
-        max_threads = 4
-    if not (max_threads > 0 and max_threads < 16):
-        max_threads = 4
+
     files = filedialog.askopenfilenames(
         filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.bmp;*.gif")]
     )
@@ -68,7 +57,6 @@ def decode(max_threads, progress_var, cwd):
 def start():
     global thread
     start_button.config(state="disabled")
-    max_threads_value = max_threads.get()
     if mode.get() == "Encode":
         thread = encode(max_threads_value, progress_var, cwd)
     elif mode.get() == "Decode":
@@ -105,11 +93,45 @@ def on_closing():
         window.destroy()
 
 
+def open_cwd():
+    cwd = os.getcwd()
+    if os.name == "nt":  # For Windows
+        try:
+            os.startfile(cwd + "/output")
+        except FileNotFoundError:
+            os.mkdir(cwd + "/output")
+            os.startfile(cwd + "/output")
+    elif os.name == "posix":  # For macOS and Linux
+        os.system(f'open "{cwd}"' if sys.platform == "darwin" else f'xdg-open "{cwd}"')
+
+
 # Create the main window
 window = tk.Tk()
 window.title("Visual Cryptography")
-window.geometry("400x350")
+window.geometry("350x600")
+window.minsize(160, 575)  # Set the minimal size of the window
+# Set the global font
+global_font = ("Helvetica", 12)
 
+window.option_add("*Font", global_font)
+# Instructions:
+instructions = tk.Label(
+    window,
+    text="Upon pressing start you will be asked to choose the image."
+    + "\nYou have to choose two images for decoding.",
+    wraplength=320,
+    justify="center",
+)
+
+instructions.pack(pady=10)
+decoding_note = tk.Label(
+    window,
+    text="Decoding Note: The images must be of the same size and format.",
+    wraplength=300,
+    justify="center",
+    font=("Arial", 10),
+)
+decoding_note.pack(pady=10)
 # Image selection
 image_label = tk.Label(window, text="Select Image:")
 image_label.pack()
@@ -123,29 +145,61 @@ encode_radio.pack(pady=5)
 
 decode_radio = tk.Radiobutton(window, text="Decode", variable=mode, value="Decode")
 decode_radio.pack(pady=5)
-
+# Threads instructions:
+threads_instructions = tk.Label(
+    window,
+    text="Select the number of threads to use (1-15).\n"
+    + "Don't use more threads than your CPU has.\n"
+    + "If uncertain use the default value.",
+    wraplength=300,
+    justify="center",
+    font=("Arial", 10),
+)
+threads_instructions.pack(pady=10)
 # Max threads input
 max_threads_label = tk.Label(window, text="Max Threads:")
 max_threads_label.pack()
 
-max_threads = tk.Entry(window)
+max_threads = tk.Entry(window, width=4)  # Set the width of the entry widget
 max_threads.insert(0, "4")  # Set default value to 4
 max_threads.pack()
+try:
+    max_threads_value = int(max_threads.get())
+except ValueError:
+    max_threads_value = 4
+if not (max_threads_value > 0 and max_threads_value < 16):
+    max_threads_value = 4
 
 # Progress bar
 progress_var = tk.DoubleVar()
 progress_bar = ttk.Progressbar(
-    window, variable=progress_var, maximum=100, mode="determinate"
+    window,
+    variable=progress_var,
+    maximum=100,
+    mode="determinate",
 )
 progress_bar.pack(pady=10, fill=tk.X)
 
 # Elapsed time label
-elapsed_time_label = tk.Label(window, text="Elapsed Time: 0.00 seconds")
+elapsed_time_label = tk.Label(window, text="Elapsed Time: 0 seconds")
 elapsed_time_label.pack()
+
 
 # Start button
 start_button = tk.Button(window, text="Start", command=start)
 start_button.pack(pady=10)
+# Folder structure
+folder_structure = tk.Label(
+    window,
+    text="Program will create an output folder in the current working directory.",
+    wraplength=300,
+    justify="center",
+    font=("Arial", 10),
+)
+folder_structure.pack(pady=10)
+# Button to open current working directory
+open_cwd_button = tk.Button(window, text="Open output folder", command=open_cwd)
+open_cwd_button.pack(pady=10)
 
 # Bind the closing event
 window.protocol("WM_DELETE_WINDOW", on_closing)
