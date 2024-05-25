@@ -227,6 +227,9 @@ def encode(image_path, max_threads=4, progress_var=None, cwd=""):
     encoded_image_1 = encode_image(
         original_width, original_height, max_threads=max_threads
     )
+    output_folder = "output"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     encoded_image_1.save(cwd + "output/3_encoded_image_1.png")
     if progress_var:
         progress_var.set(60.0)  # 3/4 stages completed
@@ -254,6 +257,9 @@ def decode(file_path_1, file_path_2, max_threads=4, progress_var=None, cwd=""):
         progress_var.set(80.0)  # 1/2 stages completed
     print("5/6: decoded_image")
     decoded_image_restored_colors = restore_colors_and_res(decoded_image)
+    output_folder = "output"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     decoded_image_restored_colors.save(
         cwd + "output/6_decoded_image_restored_colors.png"
     )
