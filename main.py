@@ -3,6 +3,7 @@ from colors import colors, colors_translated
 import numpy as np
 import concurrent.futures
 import time
+import os
 
 
 def random_tile(color=(255, 255, 255)):
@@ -203,11 +204,11 @@ def restore_colors_and_res(decoded_image):
     return decoded_image_restored_colors
 
 
-def encode(image_path, max_threads=4, progress_var=None):
+def encode(image_path, max_threads=4, progress_var=None, cwd=""):
     dithered_image = dither_image(image_path)
     if progress_var:
         progress_var.set(0)
-    dithered_image.save("output/1_dithered_image.png")
+    dithered_image.save(cwd + "output/1_dithered_image.png")
     if progress_var:
         progress_var.set(5.0)  # 1/4 stages completed
     print("1/6: dithered_image")
@@ -218,7 +219,7 @@ def encode(image_path, max_threads=4, progress_var=None):
         dithered_image, colors, colors_translated, max_threads=max_threads
     )
     x3_res_dithered_made_of_tiles_image.save(
-        "output/2_x9_res_dithered_made_of_tiles_image.png"
+        cwd + "output/2_x9_res_dithered_made_of_tiles_image.png"
     )
     if progress_var:
         progress_var.set(20.0)  # 2/4 stages completed
@@ -226,7 +227,7 @@ def encode(image_path, max_threads=4, progress_var=None):
     encoded_image_1 = encode_image(
         original_width, original_height, max_threads=max_threads
     )
-    encoded_image_1.save("output/3_encoded_image_1.png")
+    encoded_image_1.save(cwd + "output/3_encoded_image_1.png")
     if progress_var:
         progress_var.set(60.0)  # 3/4 stages completed
     print("3/6: encoded_image_1")
@@ -237,23 +238,25 @@ def encode(image_path, max_threads=4, progress_var=None):
         encoded_image_1,
         max_threads=max_threads,
     )
-    encoded_image_2.save("output/4_encoded_image_2.png")
+    encoded_image_2.save(cwd + "output/4_encoded_image_2.png")
     if progress_var:
         progress_var.set(100.0)  # 4/4 stages completed
     print("4/6: encoded_image_2 ~ 80%")
 
 
-def decode(file_path_1, file_path_2, max_threads=4, progress_var=None):
+def decode(file_path_1, file_path_2, max_threads=4, progress_var=None, cwd=""):
     encoded_image_1 = Image.open(file_path_1)
     encoded_image_2 = Image.open(file_path_2)
 
     decoded_image = decode_images(encoded_image_1, encoded_image_2)
-    decoded_image.save("output/5_decoded_image_xor_and.png")
+    decoded_image.save(cwd + "output/5_decoded_image_xor_and.png")
     if progress_var:
         progress_var.set(80.0)  # 1/2 stages completed
     print("5/6: decoded_image")
     decoded_image_restored_colors = restore_colors_and_res(decoded_image)
-    decoded_image_restored_colors.save("output/6_decoded_image_restored_colors.png")
+    decoded_image_restored_colors.save(
+        cwd + "output/6_decoded_image_restored_colors.png"
+    )
 
     if progress_var:
         progress_var.set(100.0)  # 2/2 stages completed
