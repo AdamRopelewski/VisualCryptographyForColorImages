@@ -272,7 +272,7 @@ def decode(file_path_1, file_path_2, max_threads=4, progress_var=None, cwd=""):
 if __name__ == "__main__":
     max_threads = 8
     time_start = time.time()
-    image_path = "input/ImageToBeCoded0.png"
+    image_path = "input/ImageToBeCoded.png"
     encode(image_path, max_threads=max_threads)
     decode(
         "output/3_encoded_image_1.png",

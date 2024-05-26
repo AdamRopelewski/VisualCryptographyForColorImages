@@ -1,7 +1,7 @@
 from PIL import Image as img
 import numpy as np
 
-image = img.open("input/ImageToBeCoded5.png")
+image = img.open("input/ImageToBeCoded.png")
 image = image.convert('RGB')
 pixels = np.array(image)
 

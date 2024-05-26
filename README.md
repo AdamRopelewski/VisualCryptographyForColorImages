@@ -45,7 +45,7 @@ Po zainstalowaniu wymaganych modułów uruchom program gui.py przy użyciu pytho
 
 ### 1. Plik Wejściowy
 <p align="center">
-  <img src="./input/ImageToBeCoded0.png" alt="Plik wejściowu" width="650">
+  <img src="./input/ImageToBeCoded.png" alt="Plik wejściowy" width="650">
 </p>
 
 ### 2. Plik ze zmniejszoną przestrzenią kolorów (dithering)

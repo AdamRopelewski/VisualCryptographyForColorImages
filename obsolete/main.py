@@ -122,9 +122,8 @@ def encode_images(image_hsv):
     )
 
 
-image = cv2.imread("input/ImageToBeCoded5.png")
+image = cv2.imread("input/ImageToBeCoded.png")
 
-# image = cv2.imread("input/test.png")
 # Convert the image from RGB to HSV
 image_hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
