@@ -6,6 +6,7 @@ import threading
 import main
 import time
 import psutil
+import sys
 
 # Global variables
 start_time = None
@@ -20,7 +21,7 @@ def encode(max_threads, progress_var, cwd):
     global start_time
     start_time = time.time()
     file_path = filedialog.askopenfilename(
-        filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.bmp;*.gif")]
+        filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg"), ("JPEG files", "*.jpeg"), ("BMP files", "*.bmp"), ("GIF files", "*.gif")]
     )
     thread = threading.Thread(
         target=main.encode, args=(file_path, max_threads, progress_var, cwd)
@@ -35,7 +36,7 @@ def decode(max_threads, progress_var, cwd):
     thread = None
 
     files = filedialog.askopenfilenames(
-        filetypes=[("Image files", "*.png;*.jpg;*.jpeg;*.bmp;*.gif")]
+        filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg"), ("JPEG files", "*.jpeg"), ("BMP files", "*.bmp"), ("GIF files", "*.gif")]
     )
     if len(files) == 2:
         to_decode_1 = files[0]
@@ -88,8 +89,7 @@ def on_closing():
         current_pid = os.getpid()
         for proc in psutil.process_iter():
             if proc.pid == current_pid:
-                if "python" in proc.name():
-                    proc.kill()
+                proc.kill()
         window.destroy()
 
 
