@@ -208,6 +208,9 @@ def encode(image_path, max_threads=4, progress_var=None, cwd=""):
     dithered_image = dither_image(image_path)
     if progress_var:
         progress_var.set(0)
+    output_folder = "output"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     dithered_image.save(cwd + "output/1_dithered_image.png")
     if progress_var:
         progress_var.set(5.0)  # 1/4 stages completed
@@ -227,9 +230,7 @@ def encode(image_path, max_threads=4, progress_var=None, cwd=""):
     encoded_image_1 = encode_image(
         original_width, original_height, max_threads=max_threads
     )
-    output_folder = "output"
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+
     encoded_image_1.save(cwd + "output/3_encoded_image_1.png")
     if progress_var:
         progress_var.set(60.0)  # 3/4 stages completed
@@ -252,6 +253,9 @@ def decode(file_path_1, file_path_2, max_threads=4, progress_var=None, cwd=""):
     encoded_image_2 = Image.open(file_path_2)
 
     decoded_image = decode_images(encoded_image_1, encoded_image_2)
+    output_folder = "output"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     decoded_image.save(cwd + "output/5_decoded_image_xor_and.png")
     if progress_var:
         progress_var.set(80.0)  # 1/2 stages completed
