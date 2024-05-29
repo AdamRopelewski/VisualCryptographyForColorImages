@@ -15,7 +15,6 @@ thread = None
 # Get the current working directory
 cwd = os.getcwd()
 if r'windows' in cwd.lower():
-    messagebox.showinfo("dick")
     cwd = str(Path.home())
     cwd += '\\Documents'
 
