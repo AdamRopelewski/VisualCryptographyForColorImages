@@ -17,8 +17,7 @@ cwd = os.getcwd()
 if r'windows' in cwd.lower():
     messagebox.showinfo("dick")
     cwd = str(Path.home())
-    if os.name == 'nt':
-        cwd += '\\Documents'
+    cwd += '\\Documents'
 
 cwd.replace("\\", "/")  # Replace backslashes with forward slashes
 cwd += "/"  # Add a trailing slash
