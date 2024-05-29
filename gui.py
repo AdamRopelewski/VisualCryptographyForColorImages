@@ -1,18 +1,25 @@
 import os
 import tkinter as tk
-from tkinter import messagebox, filedialog
-from tkinter import ttk
 import threading
 import main
 import time
 import psutil
 import sys
+from tkinter import messagebox, filedialog
+from tkinter import ttk
+from pathlib import Path
 
 # Global variables
 start_time = None
 thread = None
 # Get the current working directory
 cwd = os.getcwd()
+if r'windows' in cwd.lower():
+    messagebox.showinfo("dick")
+    cwd = str(Path.home())
+    if os.name == 'nt':
+        cwd += '\\Documents'
+
 cwd.replace("\\", "/")  # Replace backslashes with forward slashes
 cwd += "/"  # Add a trailing slash
 
@@ -94,7 +101,7 @@ def on_closing():
 
 
 def open_cwd():
-    cwd = os.getcwd()
+    global cwd
     if os.name == "nt":  # For Windows
         try:
             os.startfile(cwd + "/output")
