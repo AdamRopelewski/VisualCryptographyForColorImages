@@ -90,8 +90,8 @@ Po zainstalowaniu wymaganych modułów uruchom program gui.py przy użyciu pytho
 
 ## Podział pracy
 - Sebastian Matejak:
-  - Pierwsza metoda oparta na szyfrowaniu przy użyciu logicznego AND i deszyfrowaniu przy uzyciu OR. (folder obsolete)
-  - Research
+  - Pierwsza metoda oparta na szyfrowaniu przy użyciu logicznego AND i deszyfrowaniu przy uzyciu OR. (folder obsolete).
+  - Research.
   - Odtworzenie metody dla szyfrowania obrazów binarnych będącem punktem startowym.
 - Adam Ropelewski:
   - Interfejs graficzny użytkownika
