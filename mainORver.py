@@ -200,7 +200,7 @@ def restore_colors_and_res(decoded_image):
                         sum_b += 1
                     else:
                         sum_black += 1
-            restored_color = (255 * sum_r // 9, 255 * sum_g // 9, 255 * sum_b // 9)
+            restored_color = (255 * sum_r // 18, 255 * sum_g // 18, 255 * sum_b // 18)
             if sum_r == 0 and sum_g == 0 and sum_b == 0:
                 restored_color = (0, 0, 0)
             decoded_image_restored_colors.putpixel((x, y), restored_color)
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     time_start = time.time()
     image_path = "input/image_to_be_coded.png"
     output_folder = "outputOR"
-    encode(image_path, max_threads=max_threads)
+    # encode(image_path, max_threads=max_threads)
     decode(
         output_folder + "/3_encoded_image_1.png",
         output_folder + "/4_encoded_image_2.png",
