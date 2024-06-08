@@ -37,37 +37,43 @@ python gui.py
 * Użyj przycisku "Open output folder", aby otworzyć folder z plikami wynikowymi.
 
 ## Przykładowe zdjęcia
-<div style="width: 100%; text-align: center;">
-    <table>
+<div width="100%">
+    <table width="100%" align="center">
         <tr>
             <th colspan="2">Plik Wejściowy</th>
         </tr>
         <tr>
             <td colspan="2"><img src="./input/ImageToBeCoded.png" alt="Plik wejściowy" width="500" height="500"></td>
         </tr>
+    </table>
+    <table width="100%" align="center">
         <tr>
-            <th>Plik ze zmniejszoną przestrzenią kolorów (dithering)</th>
-            <th>Plik pierwotne piksele otworzone z płytek RGB. Rozdzielczość 9 razy większa</th>
+            <th width="50%">Plik ze zmniejszoną przestrzenią kolorów (dithering)</th>
+            <th width="50%">Plik pierwotne piksele otworzone z płytek RGB. Rozdzielczość 9 razy większa</th>
         </tr>
         <tr>
-            <td><img src="./output/1_dithered_image.png" alt="Zaszyfrowany plik cz. 1" width="500" height="500"></td>
-            <td><img src="./output/2_x9_res_dithered_made_of_tiles_image.png" alt="Zaszyfrowany plik cz. 2" width="500" height="500"></td>
+            <td width="50%"><img src="./output/1_dithered_image.png" alt="Zaszyfrowany plik cz. 1" width="500" height="500"></td>
+            <td width="50%"><img src="./output/2_x9_res_dithered_made_of_tiles_image.png" alt="Zaszyfrowany plik cz. 2" width="500" height="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zakodowany plik nr. 1</th>
+            <th width="50%">Zakodowany plik nr. 2</th>
         </tr>
         <tr>
-            <th>Zakodowany plik nr. 1</th>
-            <th>Zakodowany plik nr. 2</th>
+            <td width="50%"><img src="./output/3_encoded_image_1.png" alt="Zaszyfrowany plik cz. 1" width="500" height="500"></td>
+            <td width="50%"><img src="./output/4_encoded_image_2.png" alt="Zaszyfrowany plik cz. 2" width="500" height="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zdekodowany plik - Błędne kolory</th>
+            <th width="50%">Zdekodowany plik - Poprawione kolory</th>
         </tr>
         <tr>
-            <td><img src="./output/3_encoded_image_1.png" alt="Zaszyfrowany plik cz. 1" width="500" height="500"></td>
-            <td><img src="./output/4_encoded_image_2.png" alt="Zaszyfrowany plik cz. 2" width="500" height="500"></td>
-        </tr>
-        <tr>
-            <th>Zdekodowany plik - Błędne kolory</th>
-            <th>Zdekodowany plik - Poprawione kolory</th>
-        </tr>
-        <tr>
-            <td><img src="./output/5_decoded_image_xor_and.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500" height="500"></td>
-            <td><img src="./output/6_decoded_image_restored_colors.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500" height="500"></td>
+            <td width="50%"><img src="./output/5_decoded_image_xor_and.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500" height="500"></td>
+            <td width="50%"><img src="./output/6_decoded_image_restored_colors.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500" height="500"></td>
         </tr>
     </table>
 </div>
