@@ -132,17 +132,10 @@ def encode_image_2(
                             255 if x % 3 == 2 else 0,
                         )
                         # AND the encoded pixel from first encode image with the tile pixel
-                        encoded_pixel_from_im_1_inverse = tuple(
-                            np.array((255, 255, 255))
-                            - np.array(encoded_pixel_from_im_1)
-                        )
-                        # new_pixel = tuple(
-                        #     np.array(encoded_pixel_from_im_1) & np.array(tile_pixel)
-                        # )
                         new_pixel = tuple(
-                            np.array(encoded_pixel_from_im_1_inverse)
-                            & np.array(tile_pixel)
+                            np.array(encoded_pixel_from_im_1) & np.array(tile_pixel)
                         )
+
                         tile.putpixel((i, j), new_pixel)
                 encoded_image_2.paste(tile, (x * 2, y * 2))
             else:
@@ -173,22 +166,9 @@ def decode_images(encoded_image_1, encoded_image_2):
         for y in range(height):
             pixel_color1 = encoded_image_1.getpixel((x, y))
             pixel_color2 = encoded_image_2.getpixel((x, y))
-            # pixel_color2_inverse = tuple(
-            #     np.array((255, 255, 255)) - np.array(pixel_color2)
-            # )
+
             or_color = tuple(np.array(pixel_color1) | np.array(pixel_color2))
-            # pixel_color1_inverse = tuple(
-            #     np.array((255, 255, 255)) - np.array(pixel_color1)
-            # )
-            # pixel_color2_inverse = tuple(
-            #     np.array((255, 255, 255)) - np.array(pixel_color2)
-            # )
-            # or_color_2 = tuple(
-            #     np.array(pixel_color1_inverse) | np.array(pixel_color2_inverse)
-            # )
-            # or_color_2 = tuple(np.array((255, 255, 255)) - np.array(or_inverse_color))
-            # decoded_image.putpixel((x, y), or_inverse_color)
-            # decoded_image.putpixel((x, y), or_color_2)
+
             decoded_image.putpixel((x, y), or_color)
 
     return decoded_image
