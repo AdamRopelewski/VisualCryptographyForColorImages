@@ -77,7 +77,25 @@ python gui.py
         </tr>
     </table>
 </div>
-
+<div width="100%">
+    <table width="100%" align="center">
+        <tr>
+            <th colspan="2">Szyfrowanie przy użyciu AND. Zeszyfracja przy użyciu OR</th>
+        </tr>
+            <tr>
+            <td>
+            Zdekodowany obraz
+            </td>
+            <td>
+            Zdekodowany obraz po próbie odtworzenia kolorów
+            </td>
+        </tr>
+        <tr>
+            <td><img src="outputOR\5_decoded_image_xor_and.png" alt="Zdekodowany obraz (deszyfracja ORem)" width="500"></td>
+            <td><img src="outputOR\6_decoded_image_restored_colors.png" alt="Zdekodowany obraz po próbie poprawienia kolorów(deszyfracja ORem)." width="500"></td>
+        </tr>
+    </table>
+</div>
 <div width="100%">
     <table width="100%" align="center">
         <tr>
