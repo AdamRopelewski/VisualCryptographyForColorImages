@@ -279,7 +279,7 @@ if __name__ == "__main__":
     time_start = time.time()
     image_path = "input/image_to_be_coded.png"
     output_folder = "outputOR"
-    # encode(image_path, max_threads=max_threads)
+    encode(image_path, max_threads=max_threads)
     decode(
         output_folder + "/3_encoded_image_1.png",
         output_folder + "/4_encoded_image_2.png",
