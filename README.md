@@ -36,44 +36,126 @@ python gui.py
 * Po zakończeniu wyświeli się komunikat o czasie trwania.
 * Użyj przycisku "Open output folder", aby otworzyć folder z plikami wynikowymi.
 
-## Przykładowe zdjęcia
+## Przykładowe obrazy
 <div width="100%">
     <table width="100%" align="center">
         <tr>
-            <th colspan="2">Plik Wejściowy</th>
+            <th colspan="2">Obraz wejściowy - Mandryl</th>
         </tr>
         <tr>
-            <td colspan="2"><img src="./input/ImageToBeCoded.png" alt="Plik wejściowy" width="500"></td>
-        </tr>
-    </table>
-    <table width="100%" align="center">
-        <tr>
-            <th width="50%">Plik ze zmniejszoną przestrzenią kolorów (dithering)</th>
-            <th width="50%">Plik pierwotne piksele otworzone z płytek RGB. Rozdzielczość 9 razy większa</th>
-        </tr>
-        <tr>
-            <td width="50%"><img src="./output/1_dithered_image.png" alt="Zaszyfrowany plik cz. 1" width="500"></td>
-            <td width="50%"><img src="./output/2_x9_res_dithered_made_of_tiles_image.png" alt="Zaszyfrowany plik cz. 2" width="500"></td>
+            <td colspan="2"><img src="./examples/mandrill_image_to_be_coded.png" alt="Obraz wejściowy - Mandryl" width="500"></td>
         </tr>
     </table>
     <table width="100%" align="center">
         <tr>
-            <th width="50%">Zakodowany plik nr. 1</th>
-            <th width="50%">Zakodowany plik nr. 2</th>
+            <th width="50%">Zmniejszona przestrzeń kolorów (dithering)</th>
+            <th width="50%">Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)</th>
         </tr>
         <tr>
-            <td width="50%"><img src="./output/3_encoded_image_1.png" alt="Zaszyfrowany plik cz. 1" width="500"></td>
-            <td width="50%"><img src="./output/4_encoded_image_2.png" alt="Zaszyfrowany plik cz. 2" width="500"></td>
+            <td width="50%"><img src="./examples/mandrill_1_dithered_image.png" alt="Zmniejszona przestrzeń kolorów (dithering)" width="500"></td>
+            <td width="50%"><img src="./examples/mandrill_2_x9_res_dithered_made_of_tiles_image.png" alt="Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)" width="500"></td>
         </tr>
     </table>
     <table width="100%" align="center">
         <tr>
-            <th width="50%">Zdekodowany plik - Błędne kolory</th>
-            <th width="50%">Zdekodowany plik - Poprawione kolory</th>
+            <th width="50%">Zakodowany obraz nr. 1</th>
+            <th width="50%">Zakodowany obraz nr. 2</th>
         </tr>
         <tr>
-            <td width="50%"><img src="./output/5_decoded_image_xor_and.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500"></td>
-            <td width="50%"><img src="./output/6_decoded_image_restored_colors.png" alt="Odszyfrowany przykład z przywróconymi kolorami" width="500"></td>
+            <td width="50%"><img src="./examples/mandrill_3_encoded_image_1.png" alt="Zakodowany obraz nr. 1" width="500"></td>
+            <td width="50%"><img src="./examples/mandrill_4_encoded_image_2.png" alt="Zakodowany obraz nr. 2" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zdekodowany obraz</th>
+            <th width="50%">Zdekodowany obraz po próbie odtworzenia kolorów</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/mandrill_5_decoded_image_xor_and.png" alt="Zdekodowany obraz" width="500"></td>
+            <td width="50%"><img src="./examples/mandrill_6_decoded_image_restored_colors.png" alt="Zdekodowany obraz po próbie odtworzenia kolorów" width="500"></td>
+        </tr>
+    </table>
+</div>
+
+<div width="100%">
+    <table width="100%" align="center">
+        <tr>
+            <th colspan="2">Obraz wejściowy - Zdjęcie satelitarne</th>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="./examples/earth_image_to_be_coded.png" alt="Obraz wejściowy - Zdjęcie satelitarne" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zmniejszona przestrzeń kolorów (dithering)</th>
+            <th width="50%">Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/earth_1_dithered_image.png" alt="Zmniejszona przestrzeń kolorów (dithering)" width="500"></td>
+            <td width="50%"><img src="./examples/earth_2_x9_res_dithered_made_of_tiles_image.png" alt="Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zakodowany obraz nr. 1</th>
+            <th width="50%">Zakodowany obraz nr. 2</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/earth_3_encoded_image_1.png" alt="Zakodowany obraz nr. 1" width="500"></td>
+            <td width="50%"><img src="./examples/earth_4_encoded_image_2.png" alt="Zakodowany obraz nr. 2" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zdekodowany obraz</th>
+            <th width="50%">Zdekodowany obraz po próbie odtworzenia kolorów</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/earth_5_decoded_image_xor_and.png" alt="Zdekodowany obraz" width="500"></td>
+            <td width="50%"><img src="./examples/earth_6_decoded_image_restored_colors.png" alt="Zdekodowany obraz po próbie odtworzenia kolorów" width="500"></td>
+        </tr>
+    </table>
+</div>
+
+<div width="100%">
+    <table width="100%" align="center">
+        <tr>
+            <th colspan="2">Obraz wejściowy - Zdjęcie z napisem</th>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="./examples/photo_image_to_be_coded.png" alt="Obraz wejściowy - Zdjęcie z napisem" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zmniejszona przestrzeń kolorów (dithering)</th>
+            <th width="50%">Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/photo_1_dithered_image.png" alt="Zmniejszona przestrzeń kolorów (dithering)" width="500"></td>
+            <td width="50%"><img src="./examples/photo_2_x9_res_dithered_made_of_tiles_image.png" alt="Piksele otworzone z płytek RGB (rozdzielczość 9 razy większa)" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zakodowany obraz nr. 1</th>
+            <th width="50%">Zakodowany obraz nr. 2</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/photo_3_encoded_image_1.png" alt="Zakodowany obraz nr. 1" width="500"></td>
+            <td width="50%"><img src="./examples/photo_4_encoded_image_2.png" alt="Zakodowany obraz nr. 2" width="500"></td>
+        </tr>
+    </table>
+    <table width="100%" align="center">
+        <tr>
+            <th width="50%">Zdekodowany obraz</th>
+            <th width="50%">Zdekodowany obraz po próbie odtworzenia kolorów</th>
+        </tr>
+        <tr>
+            <td width="50%"><img src="./examples/photo_5_decoded_image_xor_and.png" alt="Zdekodowany obraz" width="500"></td>
+            <td width="50%"><img src="./examples/photo_6_decoded_image_restored_colors.png" alt="Zdekodowany obraz po próbie odtworzenia kolorów" width="500"></td>
         </tr>
     </table>
 </div>
