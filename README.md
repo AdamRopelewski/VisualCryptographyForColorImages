@@ -80,7 +80,7 @@ python gui.py
 <div width="100%">
     <table width="100%" align="center">
         <tr>
-            <th colspan="2">Szyfrowanie przy użyciu AND. Zeszyfracja przy użyciu OR</th>
+            <th colspan="2">Szyfrowanie przy użyciu AND. Deszyfracja przy użyciu OR</th>
         </tr>
             <tr>
             <td>
@@ -189,7 +189,7 @@ python gui.py
   - Nie wykorzystana metoda z użyciem HSV zamiast RGB.
   - Krok nr. 6 poprawiający kolory obrazka. Przywraca on orginalną rozdzielczość.
   - Refaktoryzacja kodu main.py na potrzeby GUI.
-  - Plik README z instrukcją obsługi.
+  - Plik README, z instrukcją obsługi.
 
 - Dawid Maliszewski:
   - Ostatecznie użyty algorytm wykorzysujący XOR do szyfrowania oraz AND do deszyfracji.
@@ -200,7 +200,7 @@ python gui.py
 - Sebastian Matejak:
   - Pierwsza metoda oparta na szyfrowaniu przy użyciu logicznego AND i deszyfrowaniu przy uzyciu OR (folder obsolete).
   - Research.
-  - Odtworzenie metody dla szyfrowania obrazów binarnych będącym punktem startowym.
+  - Odtworzenie metody dla szyfrowania obrazów binarnych będącej punktem startowym.
 
 ## Bibliografia
 1. <a name="source1">[Orłowski, A., Chmielewski, L.J. (2019). Color Visual Cryptography with Completely Randomly Coded Colors. In: Vento, M., Percannella, G. (eds) Computer Analysis of Images and Patterns. CAIP 2019. Lecture Notes in Computer Science(), vol 11678. Springer, Cham.](https://doi.org/10.1007/978-3-030-29888-3_48)</a>
